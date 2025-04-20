@@ -1,10 +1,16 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
+import Services from "./pages/Services";
+import Portfolio from "./pages/Portfolio";
+import About from "./pages/About";
+import Blog from "./pages/Blog";
+import Contact from "./pages/Contact";
+import Privacy from "./pages/Privacy";
+import Terms from "./pages/Terms";
 import NotFound from "./pages/NotFound";
 import { useEffect } from "react";
 import { ThemeProvider, useTheme } from "./context/ThemeContext";
@@ -28,6 +34,47 @@ const AppContent = () => {
     document.documentElement.classList.add('scroll-smooth');
   }, []);
 
+  // Script to remove lovable tag
+  useEffect(() => {
+    const removeLovableTag = () => {
+      try {
+        const lovableTags = document.querySelectorAll('[class*="lovable"]');
+        lovableTags.forEach(tag => tag.remove());
+        
+        const selectors = [
+          '[id^="lovable"]', 
+          '[class^="lovable"]',
+          '[data-lovable]',
+          '#select-button',
+          '#lovable-tag'
+        ];
+        
+        selectors.forEach(selector => {
+          const elements = document.querySelectorAll(selector);
+          elements.forEach(el => el.remove());
+        });
+        
+        console.log("Removed lovable tags");
+      } catch (error) {
+        console.error("Error removing lovable tags:", error);
+      }
+    };
+    
+    // Run on mount
+    removeLovableTag();
+    
+    // Also run after a short delay to catch any dynamically added elements
+    const timeoutId = setTimeout(removeLovableTag, 1000);
+    
+    // Set up an interval to keep checking
+    const intervalId = setInterval(removeLovableTag, 3000);
+    
+    return () => {
+      clearTimeout(timeoutId);
+      clearInterval(intervalId);
+    };
+  }, []);
+
   return (
     <ThemeWrapper>
       <TooltipProvider>
@@ -36,15 +83,13 @@ const AppContent = () => {
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Index />} />
-            
-            {/* PLACEHOLDER ROUTES - These would be implemented as needed */}
-            <Route path="/services" element={<NotFound />} />
-            <Route path="/portfolio" element={<NotFound />} />
-            <Route path="/about" element={<NotFound />} />
-            <Route path="/blog" element={<NotFound />} />
-            <Route path="/contact" element={<NotFound />} />
-            <Route path="/privacy" element={<NotFound />} />
-            <Route path="/terms" element={<NotFound />} />
+            <Route path="/services" element={<Services />} />
+            <Route path="/portfolio" element={<Portfolio />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/blog" element={<Blog />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/privacy" element={<Privacy />} />
+            <Route path="/terms" element={<Terms />} />
             
             {/* Catch-all route */}
             <Route path="*" element={<NotFound />} />
