@@ -20,10 +20,11 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     return systemPreference;
   });
 
-  // Apply theme to document when it changes
+  // Apply theme to document and HTML element when it changes
   useEffect(() => {
-    document.documentElement.classList.remove("dark", "light");
-    document.documentElement.classList.add(theme);
+    const root = document.documentElement;
+    root.classList.remove("dark", "light");
+    root.classList.add(theme);
     localStorage.setItem("theme", theme);
   }, [theme]);
 
