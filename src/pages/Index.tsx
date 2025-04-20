@@ -9,10 +9,14 @@ import CtaSection from '@/components/CtaSection';
 import Footer from '@/components/Footer';
 import CodeBackground from '@/components/CodeBackground';
 import LoadingScreen from '@/components/LoadingScreen';
+import { useTheme } from '@/context/ThemeContext';
 
 const Index = () => {
+  const { theme } = useTheme();
+  const isDark = theme === 'dark';
+
   return (
-    <div className="min-h-screen relative">
+    <div className={`min-h-screen relative ${isDark ? 'dark' : ''}`}>
       {/* Loading Screen */}
       <LoadingScreen />
       

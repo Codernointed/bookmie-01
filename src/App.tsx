@@ -7,6 +7,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import { useEffect } from "react";
+import { ThemeProvider } from "./context/ThemeContext";
 
 const queryClient = new QueryClient();
 
@@ -18,27 +19,29 @@ const App = () => {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Index />} />
-            
-            {/* PLACEHOLDER ROUTES - These would be implemented as needed */}
-            <Route path="/services" element={<NotFound />} />
-            <Route path="/portfolio" element={<NotFound />} />
-            <Route path="/about" element={<NotFound />} />
-            <Route path="/blog" element={<NotFound />} />
-            <Route path="/contact" element={<NotFound />} />
-            <Route path="/privacy" element={<NotFound />} />
-            <Route path="/terms" element={<NotFound />} />
-            
-            {/* Catch-all route */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </BrowserRouter>
-      </TooltipProvider>
+      <ThemeProvider>
+        <TooltipProvider>
+          <Toaster />
+          <Sonner />
+          <BrowserRouter>
+            <Routes>
+              <Route path="/" element={<Index />} />
+              
+              {/* PLACEHOLDER ROUTES - These would be implemented as needed */}
+              <Route path="/services" element={<NotFound />} />
+              <Route path="/portfolio" element={<NotFound />} />
+              <Route path="/about" element={<NotFound />} />
+              <Route path="/blog" element={<NotFound />} />
+              <Route path="/contact" element={<NotFound />} />
+              <Route path="/privacy" element={<NotFound />} />
+              <Route path="/terms" element={<NotFound />} />
+              
+              {/* Catch-all route */}
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </BrowserRouter>
+        </TooltipProvider>
+      </ThemeProvider>
     </QueryClientProvider>
   );
 };
