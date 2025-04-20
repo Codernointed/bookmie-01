@@ -21,8 +21,9 @@ const queryClient = new QueryClient();
 const ThemeWrapper = ({ children }: { children: React.ReactNode }) => {
   const { theme } = useTheme();
   
+  // Apply theme to the wrapper directly
   return (
-    <div className={`${theme} min-h-screen bg-background text-foreground`}>
+    <div data-theme={theme} className={`${theme} min-h-screen bg-background text-foreground transition-colors duration-300`}>
       {children}
     </div>
   );
@@ -38,15 +39,17 @@ const AppContent = () => {
   useEffect(() => {
     const removeLovableTag = () => {
       try {
-        const lovableTags = document.querySelectorAll('[class*="lovable"]');
-        lovableTags.forEach(tag => tag.remove());
-        
+        // Target more specific selectors for the lovable tag
         const selectors = [
+          '[class*="lovable"]',
           '[id^="lovable"]', 
           '[class^="lovable"]',
           '[data-lovable]',
           '#select-button',
-          '#lovable-tag'
+          '#lovable-tag',
+          '[class*="editor"]',
+          '[id*="editor"]',
+          '[class*="select-button"]'
         ];
         
         selectors.forEach(selector => {
@@ -54,7 +57,17 @@ const AppContent = () => {
           elements.forEach(el => el.remove());
         });
         
-        console.log("Removed lovable tags");
+        // Try to remove by directly accessing the DOM structure
+        const allDivs = document.querySelectorAll('div');
+        allDivs.forEach(div => {
+          if (div.innerHTML?.includes('lovable') || 
+              div.outerHTML?.includes('lovable') || 
+              div.textContent?.includes('lovable')) {
+            div.remove();
+          }
+        });
+        
+        console.log("Attempted to remove lovable tags");
       } catch (error) {
         console.error("Error removing lovable tags:", error);
       }
@@ -63,14 +76,18 @@ const AppContent = () => {
     // Run on mount
     removeLovableTag();
     
-    // Also run after a short delay to catch any dynamically added elements
-    const timeoutId = setTimeout(removeLovableTag, 1000);
+    // Also run after short delays to catch dynamically added elements
+    const timeoutIds = [
+      setTimeout(removeLovableTag, 1000),
+      setTimeout(removeLovableTag, 2000),
+      setTimeout(removeLovableTag, 5000)
+    ];
     
     // Set up an interval to keep checking
     const intervalId = setInterval(removeLovableTag, 3000);
     
     return () => {
-      clearTimeout(timeoutId);
+      timeoutIds.forEach(id => clearTimeout(id));
       clearInterval(intervalId);
     };
   }, []);

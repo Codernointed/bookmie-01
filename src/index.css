@@ -5,24 +5,24 @@
 
 @layer base {
   :root {
-    /* Base colors */
-    --background: 230 48% 23%; /* space-cadet */
-    --foreground: 51 62% 96%; /* floral-white */
+    /* Light mode colors */
+    --background: 51 62% 96%; /* floral-white for light mode */
+    --foreground: 230 48% 23%; /* space-cadet for light mode */
 
-    --card: 230 48% 23%;
-    --card-foreground: 51 62% 96%;
+    --card: 51 62% 96%;
+    --card-foreground: 230 48% 23%;
 
-    --popover: 230 48% 23%;
-    --popover-foreground: 51 62% 96%;
+    --popover: 51 62% 96%;
+    --popover-foreground: 230 48% 23%;
 
     --primary: 37 96% 61%; /* orange-web */
     --primary-foreground: 230 48% 23%;
 
-    --secondary: 243 19% 23%; /* space-cadet-2 */
-    --secondary-foreground: 51 62% 96%;
+    --secondary: 51 62% 90%; /* lighter floral-white */
+    --secondary-foreground: 230 48% 23%;
 
-    --muted: 226 57% 21%; /* space-cadet-3 */
-    --muted-foreground: 51 62% 96%;
+    --muted: 51 62% 90%;
+    --muted-foreground: 230 48% 23%;
 
     --accent: 37 96% 61%; /* orange-web */
     --accent-foreground: 230 48% 23%;
@@ -30,8 +30,8 @@
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 51 62% 96%; /* floral-white with opacity */
-    --input: 51 62% 96%;
+    --border: 230 48% 23%; /* space-cadet */
+    --input: 230 48% 23%;
     --ring: 37 96% 61%; /* orange-web */
 
     --radius: 0.5rem;
@@ -87,8 +87,17 @@
   }
 
   body {
-    @apply bg-space-cadet dark:bg-space-cadet-3 text-floral-white font-inter;
+    @apply bg-background text-foreground transition-colors duration-300 font-inter;
     font-feature-settings: "ss01", "ss02", "cv01", "cv02", "cv03";
+  }
+  
+  /* Explicit background colors for main containers */
+  .light {
+    @apply bg-floral-white text-space-cadet;
+  }
+  
+  .dark {
+    @apply bg-space-cadet-3 text-floral-white;
   }
 }
 
